@@ -1,0 +1,20 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$216000$O2v6k2h5pPzP$gtmcDX22DArNCVksOAnNDV/508gnMr2EpNeBfM1JlBY=",
+        "last_login": "2022-11-27T23:45:55.695Z",
+        "is_superuser": true,
+        "username": "harris42-uw",
+        "first_name": "",
+        "last_name": "",
+        "email": "harris42@uw.edu",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2022-11-27T22:25:24.787Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
