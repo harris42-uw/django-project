@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import loader
+from django.views.generic import ListView, DetailView
 from blogging.models import Post
 
 def stub_view(request, *args, **kwargs):
@@ -35,4 +36,14 @@ def detail_view(request, post_id):
         raise Http404
     context = {'post': post}
     return render(request, 'blogging/detail.html', context)
+
+class PostListView(ListView):
+    model = Post
+    queryset = Post.objects.exclude(published_date__exact=None).order_by('-published_date')
+    template_name = 'blogging/list.html'
+
+class PostDetailView(DetailView):
+    model = Post
+    queryset = Post.objects.exclude(published_date__exact=None)
+    template_name = 'blogging/detail.html'
 
