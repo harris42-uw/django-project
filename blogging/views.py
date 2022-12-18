@@ -4,6 +4,7 @@ from django.template import loader
 from django.views.generic import ListView, DetailView
 from blogging.models import Post
 
+
 def stub_view(request, *args, **kwargs):
     body = "Stub View\n\n"
     if args:
@@ -14,19 +15,22 @@ def stub_view(request, *args, **kwargs):
         body += "\n".join(["\t%s: %s" % i for i in kwargs.items()])
     return HttpResponse(body, content_type="text/plain")
 
+
 def list_view_explicit(request):
     published = Post.objects.exclude(published_date__exact=None)
-    posts = published.order_by('-published_date')
-    template = loader.get_template('blogging/list.html')
-    context = {'posts': posts}
+    posts = published.order_by("-published_date")
+    template = loader.get_template("blogging/list.html")
+    context = {"posts": posts}
     body = template.render(context)
     return HttpResponse(body, content_type="text/html")
- 
+
+
 def list_view(request):
     published = Post.objects.exclude(published_date__exact=None)
-    posts = published.order_by('-published_date')
-    context = {'posts': posts}
-    return render(request, 'blogging/list.html', context)
+    posts = published.order_by("-published_date")
+    context = {"posts": posts}
+    return render(request, "blogging/list.html", context)
+
 
 def detail_view(request, post_id):
     published = Post.objects.exclude(published_date__exact=None)
@@ -34,16 +38,19 @@ def detail_view(request, post_id):
         post = published.get(pk=post_id)
     except Post.DoesNotExist:
         raise Http404
-    context = {'post': post}
-    return render(request, 'blogging/detail.html', context)
+    context = {"post": post}
+    return render(request, "blogging/detail.html", context)
+
 
 class PostListView(ListView):
     model = Post
-    queryset = Post.objects.exclude(published_date__exact=None).order_by('-published_date')
-    template_name = 'blogging/list.html'
+    queryset = Post.objects.exclude(published_date__exact=None).order_by(
+        "-published_date"
+    )
+    template_name = "blogging/list.html"
+
 
 class PostDetailView(DetailView):
     model = Post
     queryset = Post.objects.exclude(published_date__exact=None)
-    template_name = 'blogging/detail.html'
-
+    template_name = "blogging/detail.html"
