@@ -2,7 +2,43 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.views.generic import ListView, DetailView
-from blogging.models import Post
+from django.contrib.auth.models import User
+from rest_framework import viewsets
+from rest_framework import permissions
+from blogging.models import Post, Category
+from blogging.serializers import UserSerializer, PostSerializer, CategorySerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+
+    queryset = User.objects.all().order_by("-date_joined")
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+
+    queryset = Post.objects.exclude(published_date__exact=None).order_by(
+        "-published_date"
+    )
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+
+    queryset = Category.objects.all().order_by("-name")
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 def stub_view(request, *args, **kwargs):
